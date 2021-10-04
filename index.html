@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Bar Chart</title>
+
+		<style>
+			#container
+			{
+				width: 100%;
+				height: 600px;
+			}
+
+			#dashboard
+			{
+				width: 100%;
+				height: 100px;
+				text-align: center;
+			}
+
+			label
+			{
+				display: inline-block;
+				width: 20em;
+				font-family: verdana;
+				color: rgba(200, 0, 0, 1);
+			}
+		</style>
+
+		<script src="https://code.highcharts.com/highcharts.js"></script>
+
+		<script>
+			document.addEventListener("DOMContentLoaded", function () {
+		    	data["2016 / 2017"] = 
+		    	{
+					"categories": ["Roberto Firminho", "Jordan Henderson", "Sadio Mané", "Danny Ings"],
+					"appearances": [41, 27, 29, 2],
+					"goals": [12, 1, 13, 0]
+	            };
+
+		    	data["2017 / 2018"] = 
+		    	{
+					"categories": ["Roberto Firminho", "Jordan Henderson", "Sadio Mané", "Danny Ings", "Alex Oxlade-Chamberlain", "Mohd Salah"],
+					"appearances": [54, 20, 44, 14, 42, 52],
+					"goals": [27, 1, 20, 1, 5, 44]
+	            };
+
+		    	data["2018 / 2019"] = 
+		    	{
+					"categories": ["Roberto Firminho", "Jordan Henderson", "Sadio Mané", "Alex Oxlade-Chamberlain", "Mohd Salah", "Fabinho"],
+					"appearances": [48, 44, 50, 2, 52, 41],
+					"goals": [16, 1, 26, 0, 27, 1]
+	            };
+
+		    	data["2019 / 2020"] = 
+		    	{
+					"categories": ["Roberto Firminho", "Jordan Henderson", "Sadio Mané", "Alex Oxlade-Chamberlain", "Mohd Salah", "Fabinho"],
+					"appearances": [52, 40, 47, 43, 48, 39],
+					"goals": [12, 4, 22, 8, 23, 2]
+	            };
+
+		    	data["2020 / 2021"] = 
+		    	{
+					"categories": ["Roberto Firminho", "Jordan Henderson", "Sadio Mané", "Alex Oxlade-Chamberlain", "Mohd Salah", "Fabinho"],
+					"appearances": [48, 28, 48, 17, 51, 42],
+					"goals": [9, 1, 16, 1, 21, 0]
+	            };
+
+				var ddlSeason = document.getElementById("ddlSeason")
+				var keys = Object.keys(data);
+
+	            for(let i = 0; i < keys.length; i++) 
+	            {
+	            	var option = document.createElement("option");
+	            	option.value = keys[i];
+	            	option.innerHTML = keys[i];
+	            	ddlSeason.appendChild(option);
+	            }
+				
+				renderBarChart();
+		    });
+
+		    function renderBarChart()
+		    {
+		    	//get data
+		    	var season = document.getElementById("ddlSeason").value;
+		    	var stat = document.getElementById("ddlStat").value;
+
+		    	var arrAverage = [];
+		    	var total = 0;
+
+		    	for(let i = 0; i < data[season][stat].length; i++)
+		    	{
+		    		total += data[season][stat][i];
+		    	}
+
+		    	for(let i = 0; i < data[season][stat].length; i++)
+		    	{
+		    		arrAverage.push(parseFloat((total / data[season][stat].length).toFixed(2)));
+		    	}
+
+		        const chart = Highcharts.chart("container", {
+		            chart: 
+		            {
+		                type: "column",
+		                borderColor: "rgba(200, 0, 0, 1)",
+		                borderRadius: 10,
+		                borderWidth: 2,
+		            },
+		            title: 
+		            {
+		                text: "Liverpool FC",
+		                style: { color: "rgba(200, 0, 0, 1); font-size: 1.5em; font-weight: bold" }
+		            },
+		            subtitle: 
+		            {
+		                text: "Football statistics by TeochewThunder",
+		                style: { color: "rgba(200, 0, 0, 0.8); font-size: 0.8em;" }
+		            },
+		            colors:["rgba(200, 0, 0, 1)"],
+		            xAxis: 
+		            {
+		                categories: data[season]["categories"]
+		            },
+		            yAxis: 
+		            {
+		                title: 
+		                {
+		                    text: ""
+		                },
+		                gridLineColor: "rgba(200, 0, 0, 0.2)",
+		                tickColor: "rgba(200, 0, 0, 0.2)"
+		            },
+		            series: 
+		            [
+				    	{
+					        name: "Average " + stat + " for " + season,
+					        type: "spline",
+					        data: arrAverage,
+					        lineColor: "rgba(255, 200, 0, 1)",
+					        lineWidth: 3,
+					        dashStyle: "Dot",
+					        marker: 
+					        {
+						        fillColor: "rgba(255, 200, 0, 1)"
+					        }
+				    	},			            
+				    	{
+			                name: season + " " + stat,
+			                data: data[season][stat],
+			                borderRadius: 5,
+			                borderColor: "rgba(255, 200, 0, 1)",
+			                borderWidth: 3
+			            }
+		            ]
+		        });
+		    }
+
+	    	const data = [];
+		</script>
+	</head>
+
+	<body>
+		<div id="container">
+
+		</div>
+
+		<div id="dashboard">
+			<label for="ddlSeason">
+				SEASON
+				<select id="ddlSeason" onchange="renderBarChart()">
+
+				</select>
+			</label>
+
+			<label for="ddlStat">
+				STATISTICS
+				<select id="ddlStat" onchange="renderBarChart()">
+					<option value="appearances" selected>Appearances</option>
+					<option value="goals">Goals</option>
+				</select>
+			</label>
+		</div>
+	</body>
+</html>
