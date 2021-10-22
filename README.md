@@ -1,4 +1,4 @@
-This is a HighCharts column chart demo, with drop-down lists to manipulate data shown.
+This is a Highcharts column chart demo, with drop-down lists to manipulate data shown.
 
 # Data
 - the key used is the season identifier.
